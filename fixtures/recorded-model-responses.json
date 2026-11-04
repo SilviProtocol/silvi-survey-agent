@@ -1,0 +1,54 @@
+{
+  "note": "Canned model responses for no-key runs and tests. A test double, never live model output. __POSE__ becomes the current phone position; __TARGET__ the tree named in the turn.",
+  "responses": [
+    {
+      "match": "make a record",
+      "text": "",
+      "tool_calls": [
+        {
+          "id": "r1",
+          "name": "create_observation",
+          "arguments": {
+            "position_m": "__POSE__",
+            "label": "young tree here"
+          }
+        }
+      ]
+    },
+    {
+      "match": "start the survey",
+      "text": "",
+      "tool_calls": [
+        {
+          "id": "s1",
+          "name": "create_site",
+          "arguments": {
+            "name": "demo plot"
+          }
+        }
+      ]
+    },
+    {
+      "match": "how many",
+      "text": "Two confirmed so far.",
+      "tool_calls": []
+    },
+    {
+      "match": "what is this",
+      "text": "",
+      "tool_calls": [
+        {
+          "id": "i1",
+          "name": "identify_species",
+          "arguments": {
+            "id": "__TARGET__"
+          }
+        }
+      ]
+    }
+  ],
+  "fallback": {
+    "text": "Noted.",
+    "tool_calls": []
+  }
+}

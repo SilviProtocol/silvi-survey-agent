@@ -1,0 +1,111 @@
+{
+  "verified": "2026-11-03",
+  "notes": [
+    "Prices are estimates for the spend guard, in USD. Provider invoices win.",
+    "This project sends survey text to models, never imagery, and does no training.",
+    "reasoning_effort is per model; Spark defaults to minimal for short spoken turns. FIELD_AGENT_EFFORT_<SELECTOR> overrides it per run. A provider that answers 400 to a call carrying it gets one retry without it.",
+    "Fallback seats: on HTTP 402, 404 or 5xx, or a connection failure, a call retries once on its configured fallback. One hop per call at most. A 400 never falls back.",
+    "Glimmer is marked unavailable: it is not served serverless, and the client refuses before spending anything."
+  ],
+  "guard": {
+    "refuse_at_fraction_of_credit": 0.8,
+    "spend_log": "data/spend.ndjson"
+  },
+  "agent": {
+    "default_model": "spark",
+    "selectable_models": [
+      "spark",
+      "spark-open",
+      "spark-open-fw",
+      "glimmer"
+    ]
+  },
+  "providers": {
+    "meta": {
+      "display_name": "Meta Model API",
+      "env_var": "META_API_KEY",
+      "credit_usd": 10.0,
+      "base_url": "https://api.meta.ai/v1",
+      "models": {
+        "spark": {
+          "model_id": "muse-spark-1.3",
+          "role": "agent reasoning",
+          "tool_choice": "auto",
+          "tool_choice_note": "Only \"auto\" is supported; \"none\", \"required\" and named choices return HTTP 400. Generated tool arguments are not guaranteed to validate against the schema.",
+          "prices": {
+            "input_per_million_tokens_usd": 1.25,
+            "cached_input_per_million_tokens_usd": 0.15,
+            "output_per_million_tokens_usd": 4.25,
+            "source": "https://dev.meta.ai/docs/pricing-rate-limits (Standard mode)",
+            "verified": "2026-10-28"
+          },
+          "reasoning_effort": "minimal",
+          "fallback": "spark-open-fw"
+        }
+      },
+      "stt": {
+        "model_id": "muse-voice-transcribe-1.0",
+        "role": "streaming speech-to-text",
+        "realtime_url": "wss://api.meta.ai/v1/asr/realtime",
+        "batch_url": "https://api.meta.ai/v1/asr/transcribe",
+        "prices": {
+          "per_audio_hour_usd": 0.18,
+          "source": "https://dev.meta.ai/docs/pricing-rate-limits (Muse Voice Transcribe, billed per whole second of audio)",
+          "verified": "2026-10-28"
+        }
+      }
+    },
+    "baseten": {
+      "display_name": "Baseten",
+      "env_var": "BASETEN_API_KEY",
+      "credit_usd": 10.0,
+      "base_url": "https://inference.baseten.co/v1",
+      "models": {
+        "spark-open": {
+          "model_id": "meta-models/muse-spark-open",
+          "role": "selectable agent model (open weights)",
+          "prices": {
+            "input_per_million_tokens_usd": 1.25,
+            "cached_input_per_million_tokens_usd": 0.15,
+            "output_per_million_tokens_usd": 4.25,
+            "source": "https://www.baseten.co/library/muse-spark-open/ (Model API pricing)",
+            "verified": "2026-10-28"
+          },
+          "fallback": "spark-open-fw"
+        }
+      }
+    },
+    "fireworks": {
+      "display_name": "Fireworks",
+      "env_var": "FIREWORKS_API_KEY",
+      "credit_usd": 10.0,
+      "base_url": "https://api.fireworks.ai/inference/v1",
+      "models": {
+        "glimmer": {
+          "model_id": "accounts/fireworks/models/muse-glimmer-30b",
+          "role": "selectable agent model, inference only (inference only)",
+          "prices": {
+            "input_per_million_tokens_usd": 0.35,
+            "cached_input_per_million_tokens_usd": 0.04,
+            "output_per_million_tokens_usd": 1.5,
+            "source": "https://fireworks.ai/models model library listing for Muse Glimmer 30B (uncached/cached/output per 1M tokens)",
+            "verified": "2026-10-28"
+          },
+          "unavailable": "Fireworks reports supportsServerless: false for this model, so there is no serverless endpoint to call. It would need a dedicated deployment first."
+        },
+        "spark-open-fw": {
+          "model_id": "accounts/fireworks/models/muse-spark-open",
+          "role": "selectable agent model (open weights, Fireworks serverless)",
+          "prices": {
+            "input_per_million_tokens_usd": 1.25,
+            "cached_input_per_million_tokens_usd": 0.15,
+            "output_per_million_tokens_usd": 4.25,
+            "source": "https://docs.fireworks.ai/serverless/pricing (Muse Spark Open, standard tier)",
+            "verified": "2026-11-03"
+          },
+          "fallback": "spark"
+        }
+      }
+    }
+  }
+}

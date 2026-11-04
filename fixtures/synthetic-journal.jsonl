@@ -1,0 +1,15 @@
+{"type": "link_start", "walk_id": "synthetic-walk-1", "device": "Example Phone", "app_commit": "demo", "session_id": "synthetic-session", "t_mono_ms": 0.0}
+{"kind": "pose", "type": "queued", "t_mono_ms": 1000.0, "payload": {"position_m": [0.0, 1.4, 0.0], "quaternion_xyzw": [0, 0, 0, 1], "tracking": "tracking", "keyframe_seq": 0}}
+{"kind": "plant_sighting", "type": "queued", "t_mono_ms": 1000.0, "payload": {"keyframe_seq": 0, "observation_id": "synthetic-obs-0", "plant_id": 41, "label": "tree", "score": 0.9, "confirmed": false}}
+{"kind": "pose", "type": "queued", "t_mono_ms": 2000.0, "payload": {"position_m": [1.0, 1.4, -1.0], "quaternion_xyzw": [0, 0, 0, 1], "tracking": "tracking", "keyframe_seq": 1}}
+{"kind": "plant_sighting", "type": "queued", "t_mono_ms": 2000.0, "payload": {"keyframe_seq": 1, "observation_id": "synthetic-obs-1", "plant_id": 41, "label": "tree", "score": 0.9, "confirmed": true}}
+{"kind": "pose", "type": "queued", "t_mono_ms": 3000.0, "payload": {"position_m": [2.0, 1.4, -2.0], "quaternion_xyzw": [0, 0, 0, 1], "tracking": "tracking", "keyframe_seq": 2}}
+{"kind": "plant_sighting", "type": "queued", "t_mono_ms": 3000.0, "payload": {"keyframe_seq": 2, "observation_id": "synthetic-obs-2", "plant_id": 41, "label": "tree", "score": 0.9, "confirmed": true}}
+{"kind": "pose", "type": "queued", "t_mono_ms": 4000.0, "payload": {"position_m": [3.0, 1.4, -3.0], "quaternion_xyzw": [0, 0, 0, 1], "tracking": "tracking", "keyframe_seq": 3}}
+{"kind": "plant_sighting", "type": "queued", "t_mono_ms": 4000.0, "payload": {"keyframe_seq": 3, "observation_id": "synthetic-obs-3", "plant_id": 41, "label": "tree", "score": 0.9, "confirmed": true}}
+{"kind": "anchor", "type": "queued", "t_mono_ms": 4500.0, "payload": {"anchor_id": "pin-a", "action": "placed", "position_m": [3.2, 0.0, -3.4], "sigma_m": 0.2, "plant_id": null, "keyframe_seq": 3}}
+{"kind": "plant_snapshot", "type": "queued", "t_mono_ms": 5000.0, "payload": {"plant_id": 41, "status": "confirmed", "position_m": [3.2, 0.0, -3.6], "sigma_m": 0.25, "n_views": 6, "display_no": 1, "first_seq": 0, "last_seq": 3, "merged_into": null}}
+{"kind": "transcript", "type": "queued", "t_mono_ms": 6000.0, "payload": {"text": "Start the survey.", "is_final": true, "speaker": "walker"}}
+{"kind": "transcript", "type": "queued", "t_mono_ms": 7000.0, "payload": {"text": "Make a record of this young tree here.", "is_final": true, "speaker": "walker"}}
+{"kind": "evidence_photo", "type": "queued", "t_mono_ms": 8000.0, "payload": {"plant_id": 41, "keyframe_seq": 3, "distance_m": 1.2, "jpeg": "/9hzeW50aGV0aWMtcGhvdG//2Q=="}}
+{"kind": "transcript", "type": "queued", "t_mono_ms": 9000.0, "payload": {"text": "How many have I logged?", "is_final": true, "speaker": "walker"}}

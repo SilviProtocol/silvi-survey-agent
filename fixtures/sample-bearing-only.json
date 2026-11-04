@@ -1,0 +1,39 @@
+{
+  "id": "urn:silvi:obs:backyard:tree-x:v1",
+  "site_id": "backyard-demo",
+  "identity": {
+    "local_id": "tree-x",
+    "persistent_id": null,
+    "status": "tentative",
+    "merged_into": null,
+    "visit_ids": [
+      "rw-20261026-172226-5cd92630"
+    ]
+  },
+  "position": {
+    "frame": "site_local",
+    "xyz_m": null,
+    "geo": null
+  },
+  "uncertainty": {
+    "sigma_m": 0.4,
+    "method": "bearing_only",
+    "n_views": 3,
+    "status": "bearing_only"
+  },
+  "collection": {
+    "walk_id": "synthetic-walk-1",
+    "observed_at": "2026-10-26T17:23:10Z",
+    "observer": null,
+    "device": null,
+    "protocol": "field-agent-survey-v1"
+  },
+  "identification": null,
+  "verbatim_label": null,
+  "establishment": "unknown",
+  "measurements": {
+    "height_m": null,
+    "dbh_cm": null
+  },
+  "media": []
+}

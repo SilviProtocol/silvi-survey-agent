@@ -1,0 +1,1307 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silvi.earth/schemas/field-agent/wire/1",
+  "title": "Silvi Field Agent wire envelope v1",
+  "description": "Phone <-> agent messages. One JSON object per line (NDJSON) or per WebSocket frame. Each direction has its own data sequence space starting at 0; control kinds (resume/resumed/error/capabilities/voice_start/voice_end/voice_cancel) do not consume a seq, their envelope seq carries the sender's next data seq. Phone-to-agent payloads accept and ignore unknown fields. Wire v2 kinds (anchor, mode, evidence_photo, plant_view, evidence_request, view_request, tree_status, voice_*) and the v2 fields (display_no, transcript.focus, pose.geo) travel only after the server has sent capabilities {wire: 2} on that connection. See docs/PHONE-CLIENT.md. Positions are metres in the site-local frame unless a geo anchor is present.",
+  "type": "object",
+  "required": [
+    "v",
+    "kind",
+    "seq",
+    "session_id",
+    "t_mono_ms",
+    "payload"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "v": {
+      "const": "1"
+    },
+    "kind": {
+      "enum": [
+        "session_start",
+        "pose",
+        "plant_sighting",
+        "plant_snapshot",
+        "coverage",
+        "transcript",
+        "clip_ref",
+        "session_end",
+        "speech",
+        "waypoint",
+        "polygon",
+        "gap",
+        "resume",
+        "resumed",
+        "error",
+        "anchor",
+        "mode",
+        "evidence_photo",
+        "plant_view",
+        "evidence_request",
+        "view_request",
+        "tree_status",
+        "capabilities",
+        "voice_start",
+        "voice_end",
+        "voice_cancel"
+      ]
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "t_mono_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "t_wall_ms": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "payload": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "session_start"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SessionStart"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "pose"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Pose"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "plant_sighting"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/PlantSighting"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "plant_snapshot"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/PlantSnapshot"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "coverage"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Coverage"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "clip_ref"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ClipRef"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "session_end"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/SessionEnd"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "speech"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Speech"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "waypoint"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Waypoint"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "polygon"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Polygon"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "gap"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Gap"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "resume"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Resume"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "resumed"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Resumed"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "error"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ProtocolError"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "anchor"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Anchor"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "mode"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Mode"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "evidence_photo"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/EvidencePhoto"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "plant_view"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/PlantView"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "evidence_request"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/EvidenceRequest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "view_request"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/ViewRequest"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "tree_status"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/TreeStatus"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "capabilities"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/Capabilities"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "voice_start"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/VoiceStart"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "voice_end"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/VoiceEnd"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "voice_cancel"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/VoiceEnd"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "transcript"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Transcript"
+              },
+              {
+                "$ref": "#/$defs/AgentTranscript"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "Vec3": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "SessionStart": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "walk_id",
+        "frame"
+      ],
+      "properties": {
+        "walk_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "device": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "app_commit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Pose": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "position_m",
+        "quaternion_xyzw",
+        "tracking",
+        "keyframe_seq"
+      ],
+      "properties": {
+        "position_m": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "quaternion_xyzw": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "tracking": {
+          "type": "string"
+        },
+        "keyframe_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "geo": {
+          "$ref": "#/$defs/Geo"
+        }
+      }
+    },
+    "PlantSighting": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "keyframe_seq",
+        "observation_id",
+        "label",
+        "score",
+        "confirmed"
+      ],
+      "properties": {
+        "keyframe_seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "observation_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plant_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "box_px": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          },
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "confirmed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PlantSnapshot": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "plant_id",
+        "status",
+        "position_m",
+        "sigma_m",
+        "n_views"
+      ],
+      "properties": {
+        "plant_id": {
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "tentative",
+            "confirmed",
+            "merged",
+            "retired"
+          ]
+        },
+        "position_m": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vec3"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sigma_m": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "n_views": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "first_seq": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "last_seq": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "merged_into": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "display_no": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        }
+      }
+    },
+    "Coverage": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Coverage grid over the site-local XZ ground plane. grid-v1: row-major bytes (row = z index), 0 unseen / 1 seen, origin at the min corner. opaque-v0 is an early placeholder, still accepted.",
+      "required": [
+        "cell_m",
+        "encoding",
+        "cells_b64"
+      ],
+      "properties": {
+        "cell_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "encoding": {
+          "enum": [
+            "opaque-v0",
+            "grid-v1"
+          ]
+        },
+        "cells_b64": {
+          "type": "string"
+        },
+        "origin_xz_m": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "Transcript": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "text",
+        "is_final"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "is_final": {
+          "type": "boolean"
+        },
+        "speaker": {
+          "type": "string",
+          "default": "walker"
+        },
+        "focus": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "utterance_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ClipRef": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Descriptor for a short clip sent out of band on request. No media bytes travel in the wire feed.",
+      "required": [
+        "clip_id",
+        "reason",
+        "duration_ms"
+      ],
+      "properties": {
+        "clip_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string"
+        },
+        "duration_ms": {
+          "type": "number",
+          "minimum": 0
+        },
+        "uri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "SessionEnd": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "reason"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "Speech": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text"
+      ],
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "Waypoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position_m",
+        "label"
+      ],
+      "properties": {
+        "position_m": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "Polygon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "vertices_m",
+        "label"
+      ],
+      "properties": {
+        "vertices_m": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Vec3"
+          },
+          "minItems": 3
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "Gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "position_m",
+        "radius_m",
+        "reason"
+      ],
+      "properties": {
+        "position_m": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "radius_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "Resume": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Phone -> agent control (live server only). First message on a reconnected socket. Does not consume a client seq: the envelope seq carries the next client data seq. last_agent_seq is the highest agent-direction data seq the phone has received (-1 or null for none).",
+      "required": [
+        "last_agent_seq"
+      ],
+      "properties": {
+        "last_agent_seq": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": -1
+        }
+      }
+    },
+    "Resumed": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Agent -> phone control. Answer to resume, sent before any replayed outputs. Does not consume an agent seq: the envelope seq carries the next agent data seq. last_client_seq is the highest contiguous client data seq the server has processed.",
+      "required": [
+        "last_client_seq",
+        "next_agent_seq"
+      ],
+      "properties": {
+        "last_client_seq": {
+          "type": "integer",
+          "minimum": -1
+        },
+        "next_agent_seq": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "ProtocolError": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Agent -> phone control. A protocol violation; the server closes the socket after sending it. Does not consume an agent seq.",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "message": {
+          "type": "string"
+        },
+        "expected_seq": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "Geo": {
+      "type": "object",
+      "required": [
+        "lat",
+        "lon"
+      ],
+      "properties": {
+        "lat": {
+          "type": "number"
+        },
+        "lon": {
+          "type": "number"
+        },
+        "altitude_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "accuracy_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "Anchor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "anchor_id",
+        "action"
+      ],
+      "properties": {
+        "anchor_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "action": {
+          "enum": [
+            "placed",
+            "moved",
+            "updated",
+            "removed"
+          ]
+        },
+        "position_m": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Vec3"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sigma_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "plant_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "keyframe_seq": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "Mode": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "survey",
+            "evidence"
+          ]
+        }
+      }
+    },
+    "EvidencePhoto": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "plant_id",
+        "jpeg"
+      ],
+      "properties": {
+        "plant_id": {
+          "type": "integer"
+        },
+        "keyframe_seq": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "distance_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "jpeg": {
+          "type": "string",
+          "minLength": 1
+        },
+        "request_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "PlantView": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "plant_id",
+        "jpeg"
+      ],
+      "properties": {
+        "plant_id": {
+          "type": "integer"
+        },
+        "jpeg": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keyframe_seq": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "EvidenceRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "request_id",
+        "plant_id",
+        "want"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plant_id": {
+          "type": "integer"
+        },
+        "want": {
+          "enum": [
+            "bark",
+            "leaf",
+            "whole",
+            "flower_or_fruit",
+            "base",
+            "side"
+          ]
+        }
+      }
+    },
+    "ViewRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plant_id",
+        "max_px"
+      ],
+      "properties": {
+        "plant_id": {
+          "type": "integer"
+        },
+        "max_px": {
+          "type": "integer",
+          "minimum": 64
+        }
+      }
+    },
+    "TreeStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "trees"
+      ],
+      "properties": {
+        "trees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TreeStatusRow"
+          }
+        }
+      }
+    },
+    "TreeStatusRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plant_id",
+        "number",
+        "what_ring",
+        "short_name"
+      ],
+      "properties": {
+        "plant_id": {
+          "type": "integer"
+        },
+        "number": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "what_ring": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "short_name": {
+          "type": "string",
+          "maxLength": 18
+        }
+      }
+    },
+    "Capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wire"
+      ],
+      "description": "Agent -> phone control. Sent right after session_start binds and on every resumed. Until the phone sees it, it sends v1 only. Does not consume an agent seq.",
+      "properties": {
+        "wire": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "max_frame_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1
+        },
+        "audio_in": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AudioIn"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "AudioIn": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sample_rate",
+        "encoding",
+        "channels"
+      ],
+      "properties": {
+        "sample_rate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "channels": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "VoiceStart": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Phone -> agent control. Opens one streamed utterance; binary PCM frames follow until voice_end or voice_cancel. Does not consume a client seq.",
+      "required": [
+        "utterance_id",
+        "sample_rate",
+        "encoding",
+        "channels"
+      ],
+      "properties": {
+        "utterance_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sample_rate": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "encoding": {
+          "type": "string"
+        },
+        "channels": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "focus": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      }
+    },
+    "VoiceEnd": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Phone -> agent control. Closes (voice_end) or abandons (voice_cancel) an open utterance. Does not consume a client seq.",
+      "required": [
+        "utterance_id"
+      ],
+      "properties": {
+        "utterance_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "AgentTranscript": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Agent -> phone. The server-side speech result for one streamed utterance. Exactly one final per utterance, sent as agent data; partials, if any, are control.",
+      "required": [
+        "utterance_id",
+        "text",
+        "final"
+      ],
+      "properties": {
+        "utterance_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "text": {
+          "type": "string"
+        },
+        "final": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

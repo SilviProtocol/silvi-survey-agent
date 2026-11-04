@@ -1,0 +1,54 @@
+{
+  "id": "urn:silvi:obs:backyard:tree-7:v1",
+  "site_id": "backyard-demo",
+  "identity": {
+    "local_id": "tree-7",
+    "persistent_id": "urn:silvi:plant:backyard:7",
+    "status": "confirmed",
+    "merged_into": null,
+    "visit_ids": [
+      "rw-20261026-172226-5cd92630"
+    ]
+  },
+  "position": {
+    "frame": "site_local",
+    "xyz_m": [
+      4.0,
+      0.0,
+      -6.0
+    ],
+    "geo": null
+  },
+  "uncertainty": {
+    "sigma_m": 0.4,
+    "method": "field_placement",
+    "n_views": 3,
+    "status": "placed"
+  },
+  "collection": {
+    "walk_id": "synthetic-walk-1",
+    "observed_at": "2026-10-26T17:22:26Z",
+    "observer": "walker-1",
+    "device": null,
+    "protocol": "field-agent-survey-v1"
+  },
+  "identification": {
+    "taxon": "Quercus alba",
+    "confidence": 0.6,
+    "basis": "agent",
+    "identified_by": "walker-1",
+    "revisable": true
+  },
+  "verbatim_label": "white oak by the fence",
+  "establishment": "planted",
+  "measurements": {
+    "height_m": 4.2,
+    "dbh_cm": null
+  },
+  "media": [
+    {
+      "kind": "photo",
+      "ref": "walk:images/kf000042.jpg"
+    }
+  ]
+}

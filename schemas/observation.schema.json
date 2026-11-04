@@ -1,0 +1,369 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://silvi.earth/schemas/field-agent/observation/1",
+  "title": "3D-anchored observation record v1 (canonical)",
+  "description": "One plant or observation pinned in 3D with its uncertainty, how it was collected, and its identity across visits.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "site_id",
+    "identity",
+    "position",
+    "uncertainty",
+    "collection",
+    "establishment"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "site_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "local_id",
+        "status",
+        "visit_ids"
+      ],
+      "properties": {
+        "local_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "persistent_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "tentative",
+            "confirmed",
+            "merged",
+            "retired"
+          ]
+        },
+        "merged_into": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "visit_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "position": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frame",
+        "xyz_m",
+        "geo"
+      ],
+      "properties": {
+        "frame": {
+          "type": "string",
+          "minLength": 1
+        },
+        "xyz_m": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "geo": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "lat",
+                "lon"
+              ],
+              "properties": {
+                "lat": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "lon": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "alt_m": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sigma_m",
+        "method",
+        "n_views",
+        "status"
+      ],
+      "properties": {
+        "sigma_m": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "n_views": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "enum": [
+            "placed",
+            "bearing_only",
+            "seen_not_placed"
+          ]
+        }
+      }
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "walk_id",
+        "observed_at",
+        "protocol"
+      ],
+      "properties": {
+        "walk_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "observer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "device": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "protocol": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "identification": {
+      "anyOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "taxon",
+            "confidence",
+            "basis",
+            "revisable"
+          ],
+          "properties": {
+            "taxon": {
+              "type": "string",
+              "minLength": 1
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "basis": {
+              "type": "string"
+            },
+            "identified_by": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "revisable": {
+              "const": true
+            },
+            "taxon_rank": {
+              "enum": [
+                "species",
+                "genus",
+                "family"
+              ]
+            },
+            "candidates": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "p"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "p": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "gbif_key": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            },
+            "gbif_key": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "gbif_match": {
+              "type": [
+                "object",
+                "null"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "match_type": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "confidence": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "accepted_name": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "matched_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            "model": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "verbatim_label": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "establishment": {
+      "enum": [
+        "planted",
+        "wild",
+        "unknown"
+      ]
+    },
+    "measurements": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "height_m": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "dbh_cm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "ref"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
