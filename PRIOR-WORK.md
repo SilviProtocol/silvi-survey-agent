@@ -1,8 +1,9 @@
 # Prior work
 
-The phone app, its on-phone detection and positioning, and the
-species service existed before 27 October 2026. They are closed and
-are not part of this repository. This code reaches them only through
+The phone app and its on-phone detection and positioning existed
+before 27 October 2026. They are closed and are not part of this
+repository. The species service is also closed and is not part of
+this repository. This code reaches them only through
 two seams: the wire contract (the phone streams poses, plant
 snapshots, pins and speech; the agent answers) and the species plug
 (evidence photos out, names and confidences back).

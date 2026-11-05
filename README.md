@@ -62,3 +62,7 @@ species plug.
 ## Prior work
 
 See `PRIOR-WORK.md` for what predates the hackathon and stays closed.
+
+## Licence
+
+AGPL-3.0-only. See `LICENSE`.

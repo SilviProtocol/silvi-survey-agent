@@ -43,7 +43,7 @@ def test_agent_kinds_stay_strict():
     with pytest.raises(ValidationError):
         validate_wire({
             "v": "1", "kind": "tree_status", "seq": 0, "session_id": "s", "t_mono_ms": 0.0,
-            "payload": {"trees": [{"plant_id": 1, "number": 1, "where_ring": 0.5,
+            "payload": {"trees": [{"plant_id": 1, "number": 1, "retired_field": 0.5,
                                     "what_ring": 0.5, "short_name": "oak"}]},
         })
 
@@ -66,5 +66,5 @@ def test_needs_and_completion_are_plain_status():
     world.set_species(5, {"taxon": "Acer rubrum", "confidence": 0.9})
     assert world.needs(5) == []
     row = world.status_row(5)
-    assert "where_ring" not in row
+    assert "retired_field" not in row
     assert row["what_ring"] == 0.9
